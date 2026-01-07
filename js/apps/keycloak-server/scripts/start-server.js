@@ -19,6 +19,7 @@ const ADMIN_PASSWORD = "admin";
 const CLIENT_ID = "temporary-admin-service";
 const CLIENT_SECRET = "temporary-admin-service";
 const DEFAULT_THEME = "keycloakify-starter";
+const DEFAULT_WELCOME_THEME = "keycloak";
 
 const options = {
   local: {
@@ -65,12 +66,26 @@ async function startServer() {
       a === "--spi-theme--default" || a.startsWith("--spi-theme--default="),
   );
 
+  // The WELCOME theme is used for the root landing page (http://localhost:8080/).
+  // Many custom themes don't provide a WELCOME type, so setting spi-theme--default
+  // to a custom theme can make the welcome page fail to render ("The theme is null").
+  // Allow overriding via CLI args or env var.
+  const welcomeTheme = process.env.KC_THEME_WELCOME ?? DEFAULT_WELCOME_THEME;
+  const hasWelcomeThemeArg = keycloakArgs.some(
+    (a) =>
+      a === "--spi-theme--welcome-theme" ||
+      a.startsWith("--spi-theme--welcome-theme="),
+  );
+
   const child = spawn(
     path.join(SERVER_DIR, `bin/kc${SCRIPT_EXTENSION}`),
     [
       "start-dev",
       `--features="transient-users,oid4vc-vci,declarative-ui,quick-theme,spiffe,kubernetes-service-accounts,workflows,client-auth-federated,jwt-authorization-grant"`,
       ...(hasDefaultThemeArg ? [] : [`--spi-theme--default=${themeDefault}`]),
+      ...(hasWelcomeThemeArg
+        ? []
+        : [`--spi-theme--welcome-theme=${welcomeTheme}`]),
       ...keycloakArgs,
     ],
     {
