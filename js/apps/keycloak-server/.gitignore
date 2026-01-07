@@ -1,2 +1,7 @@
 # Keycloak server
-server
+server/**
+
+# Keep our custom theme provider jar in git
+!server/
+!server/providers/
+!server/providers/keycloakify-starter.jar

@@ -18,6 +18,7 @@ const ADMIN_USERNAME = "admin";
 const ADMIN_PASSWORD = "admin";
 const CLIENT_ID = "temporary-admin-service";
 const CLIENT_SECRET = "temporary-admin-service";
+const DEFAULT_THEME = "keycloakify-starter";
 
 const options = {
   local: {
@@ -56,11 +57,20 @@ async function startServer() {
 
   console.info("Starting server…");
 
+  // Ensure a consistent default theme for fresh installs and new realms (when realm theme is unset/"Choose…").
+  // Allow overriding via CLI args or env var.
+  const themeDefault = process.env.KC_THEME_DEFAULT ?? DEFAULT_THEME;
+  const hasDefaultThemeArg = keycloakArgs.some(
+    (a) =>
+      a === "--spi-theme--default" || a.startsWith("--spi-theme--default="),
+  );
+
   const child = spawn(
     path.join(SERVER_DIR, `bin/kc${SCRIPT_EXTENSION}`),
     [
       "start-dev",
       `--features="transient-users,oid4vc-vci,declarative-ui,quick-theme,spiffe,kubernetes-service-accounts,workflows,client-auth-federated,jwt-authorization-grant"`,
+      ...(hasDefaultThemeArg ? [] : [`--spi-theme--default=${themeDefault}`]),
       ...keycloakArgs,
     ],
     {
