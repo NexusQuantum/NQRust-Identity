@@ -29,6 +29,8 @@ The above commands will download the [Nightly version](https://github.com/keyclo
 pnpm delete-server
 ```
 
+NOTE: The script detects an existing installation by checking for `server/bin/kc.(bat|sh)`. This allows committing custom provider JARs under `server/providers` without causing the download step to be skipped.
+
 Or if you just want to clear the data so you can start fresh without downloading the server again:
 
 ```sh

@@ -104,9 +104,14 @@ function handleArgs(args) {
 }
 
 async function downloadServer(local) {
-  const directoryExists = fs.existsSync(SERVER_DIR);
+  // Don't treat "server/" existing as a valid installation. The repo may contain only
+  // tracked artifacts (e.g. a custom provider JAR under server/providers) while the
+  // actual Keycloak distribution is not present yet.
+  const kcBat = path.join(SERVER_DIR, "bin", "kc.bat");
+  const kcSh = path.join(SERVER_DIR, "bin", "kc.sh");
+  const hasServerInstall = fs.existsSync(kcBat) || fs.existsSync(kcSh);
 
-  if (directoryExists) {
+  if (hasServerInstall) {
     console.info("Server installation found, skipping download.");
     return;
   }
