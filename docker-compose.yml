@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: keycloak-db
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    volumes:
+      - keycloak_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  keycloak:
+    # Override at runtime:
+    #   KEYCLOAK_IMAGE=ghcr.io/<username>/keycloak:latest docker compose up -d
+    image: ${KEYCLOAK_IMAGE:-ghcr.io/<username>/keycloak:latest}
+    container_name: keycloak
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      # Admin bootstrap
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      # Production database config
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+
+      # Recommended toggles
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+
+      # Behind reverse proxy? (uncomment + tune)
+      # KC_PROXY: edge
+      # KC_HOSTNAME: auth.example.com
+      # Theme defaults (theme-as-JAR: keycloakify-starter.jar)
+      # Note: welcome theme should remain "keycloak" unless your custom theme provides a WELCOME theme type.
+      KC_THEME_DEFAULT: ${KC_THEME_DEFAULT:-keycloakify-starter}
+      KC_THEME_WELCOME: ${KC_THEME_WELCOME:-keycloak}
+
+    # Use string form so we can use env-substitution in args
+    command: >
+      start --optimized
+      --spi-theme--default=${KC_THEME_DEFAULT:-keycloakify-starter}
+      --spi-theme--welcome-theme=${KC_THEME_WELCOME:-keycloak}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health/ready > /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  keycloak_pgdata: {}
+

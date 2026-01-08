@@ -46,6 +46,10 @@ Alternatively, you can use the Docker image by running:
     
 For more details refer to the [Keycloak Documentation](https://www.keycloak.org/documentation.html).
 
+### Custom build → GHCR (this fork)
+
+If you want this repository to auto-build and publish a custom Keycloak image to GitHub Container Registry (GHCR), see `README-GHCR.md`.
+
 
 ## Building from Source
 
