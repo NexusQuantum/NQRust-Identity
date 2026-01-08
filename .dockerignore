@@ -9,7 +9,6 @@
 
 # Build outputs
 **/target
-**/dist
 **/.kc
 
 # Node / frontend caches (Keycloak repo has JS apps)
