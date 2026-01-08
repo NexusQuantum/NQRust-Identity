@@ -44,7 +44,7 @@ ARG KEYCLOAK_BUILD_DB=postgres
 RUN dnf install -y tar gzip java-21-openjdk-headless glibc-langpack-en findutils && \
     dnf clean all
 
-RUN mkdir -p /tmp/keycloak /opt/keycloak
+RUN mkdir -p /tmp/keycloak
 
 # Copy the built distribution archive from the previous stage
 COPY --from=dist-build /workspace/quarkus/dist/target/keycloak-*.tar.gz /tmp/keycloak/keycloak.tar.gz
