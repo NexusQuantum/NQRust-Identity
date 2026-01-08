@@ -16,8 +16,8 @@ services:
 
   keycloak:
     # Override at runtime:
-    #   KEYCLOAK_IMAGE=ghcr.io/<username>/keycloak:latest docker compose up -d
-    image: ${KEYCLOAK_IMAGE:-ghcr.io/<username>/keycloak:latest}
+    #   KEYCLOAK_IMAGE=ghcr.io/idhamtrycode/keycloak:latest docker compose up -d
+    image: ${KEYCLOAK_IMAGE:-ghcr.io/idhamtrycode/keycloak:latest}
     container_name: keycloak
     depends_on:
       postgres:
@@ -39,6 +39,11 @@ services:
       KC_HEALTH_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
 
+      # Local-friendly HTTP/hostname settings for `start` (production profile)
+      # In production, either set KC_HOSTNAME or keep strict off behind a proxy.
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+
       # Behind reverse proxy? (uncomment + tune)
       # KC_PROXY: edge
       # KC_HOSTNAME: auth.example.com
@@ -50,6 +55,8 @@ services:
     # Use string form so we can use env-substitution in args
     command: >
       start --optimized
+      --http-enabled=true
+      --hostname-strict=false
       --spi-theme--default=${KC_THEME_DEFAULT:-keycloakify-starter}
       --spi-theme--welcome-theme=${KC_THEME_WELCOME:-keycloak}
     healthcheck:

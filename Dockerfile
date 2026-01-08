@@ -39,6 +39,8 @@ FROM registry.access.redhat.com/ubi9 AS ubi-micro-build
 
 ARG KEYCLOAK_VERSION=999.0.0-SNAPSHOT
 ARG KEYCLOAK_BUILD_DB=postgres
+ARG KEYCLOAK_HEALTH_ENABLED=true
+ARG KEYCLOAK_METRICS_ENABLED=true
 
 # Need tar/gzip to unpack dist; need java to run kc.sh build (Quarkus augmentation)
 RUN dnf install -y tar gzip java-21-openjdk-headless glibc-langpack-en findutils && \
@@ -70,7 +72,10 @@ RUN chmod -R g+rwX /opt/keycloak
 
 # Build-time optimization (recommended for production images)
 # - Build with a default DB driver (postgres by default); can be overridden via build-arg
-RUN /opt/keycloak/bin/kc.sh build --db=${KEYCLOAK_BUILD_DB}
+RUN /opt/keycloak/bin/kc.sh build \
+    --db=${KEYCLOAK_BUILD_DB} \
+    --health-enabled=${KEYCLOAK_HEALTH_ENABLED} \
+    --metrics-enabled=${KEYCLOAK_METRICS_ENABLED}
 
 # Build minimal rootfs for ubi-micro (includes java + small shell utils + curl for /health checks)
 COPY quarkus/container/ubi-null.sh /tmp/ubi-null.sh

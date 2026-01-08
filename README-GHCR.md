@@ -4,11 +4,9 @@ Repo ini dibuat untuk **custom build Keycloak** lalu **publish image Docker ke G
 
 ### Image
 - **Registry**: `ghcr.io`
-- **Image name**: `ghcr.io/<your-username>/keycloak`
+- **Image name**: `ghcr.io/<your-username>/keycloak` (contoh: `ghcr.io/idhamtrycode/keycloak`)
 - **Tags**:
-  - `latest` (push ke `main`)
-  - `sha-<short>` (traceability per commit)
-  - `vX.Y.Z`, `X.Y`, `X` (saat push tag semver `vX.Y.Z`)
+  - `latest`
 
 ---
 
@@ -43,7 +41,6 @@ File siap pakai: `docker-compose.yml`
 ### Jalankan
 
 ```bash
-set KEYCLOAK_IMAGE=ghcr.io/<your-username>/keycloak:latest
 docker compose up -d
 ```
 
