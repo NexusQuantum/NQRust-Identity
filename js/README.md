@@ -1,16 +1,16 @@
-# Keycloak JavaScript
+# Identity JavaScript
 
-This directory contains the UIs and related libraries of the Keycloak project written in JavaScript (and TypeScript).
+This directory contains the UIs and related libraries of the Identity project written in JavaScript (and TypeScript).
 
 ## Directory structure
 
     ├── apps
     │   ├── account-ui                 # Account UI for account management i.e controlling password and account access, tracking and managing permissions
     │   ├── admin-ui                   # Admin UI for handling login, registration, administration, and account management
-    │   └── keycloak-server            # Keycloak server for local development of UIs
+    │   └── keycloak-server            # Identity server for local development of UIs
     ├── libs
     │   ├── ui-shared                  # Shared component library between admin and account
-    │   └── keycloak-admin-client      # Keycloak Admin Client library for Keycloak REST API
+    │   └── keycloak-admin-client      # Identity Admin Client library for Identity REST API
     ├── ...
 
 ## Data processing

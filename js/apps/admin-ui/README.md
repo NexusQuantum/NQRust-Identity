@@ -1,6 +1,6 @@
-# Keycloak Admin UI
+# Identity Admin UI
 
-This project is the next generation of the Keycloak Admin UI. It is written with React and [PatternFly 4](https://www.patternfly.org/v4/) and uses [Vite](https://vitejs.dev/guide/).
+This project is the next generation of the Identity Admin UI. It is written with React and [PatternFly 4](https://www.patternfly.org/v4/) and uses [Vite](https://vitejs.dev/guide/).
 
 ## Features
 

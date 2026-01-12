@@ -120,7 +120,7 @@ We will use one global CSS file to surface customization variables. Styles parti
 
 PatternFly reference https://pf4.patternfly.org/guidelines#variables
 
-For the Admin UI, we modify the PatternFly convention to namespace the classes and variables to the Keycloak packages.
+For the Admin UI, we modify the PatternFly convention to namespace the classes and variables to the Identity packages.
 
 **Class name**
 
@@ -163,7 +163,7 @@ However, there are other times when modifications must be made to the styling pr
 
 These values can be seen in the [PatternFly design guidelines](https://v4-archive.patternfly.org/v4/design-guidelines/styles/colors) and a [full listing of variables](https://v4-archive.patternfly.org/v4/developer-resources/global-css-variables) can be found in the documentation section.
 
-For the Admin UI, we modify the PatternFly convention to namespace the classes and variables to the Keycloak packages.
+For the Admin UI, we modify the PatternFly convention to namespace the classes and variables to the Identity packages.
 
 **Custom property**
 

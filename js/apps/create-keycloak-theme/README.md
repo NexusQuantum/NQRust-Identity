@@ -1,6 +1,6 @@
 # kc-create
 
-Create a new Keycloak ui project based on a template
+Create a new Identity ui project based on a template
 
 ## Usage
 

@@ -1,9 +1,9 @@
-## Keycloak Admin Client
+## Identity Admin Client
 
 ## Features
 
 - TypeScript supported
-- Latest Keycloak version supported
+- Latest Identity version supported
 - [Complete resource definitions](./src/defs)
 - [Well-tested for supported APIs](./test)
 
@@ -60,7 +60,7 @@ await kcAdminClient.users.create({
 });
 ```
 
-To refresh the access token provided by Keycloak, an OpenID client like [panva/node-openid-client](https://github.com/panva/node-openid-client) can be used like this:
+To refresh the access token provided by Identity, an OpenID client like [panva/node-openid-client](https://github.com/panva/node-openid-client) can be used like this:
 
 ```js
 import {Issuer} from 'openid-client';
@@ -110,7 +110,7 @@ To build the source do a build:
 pnpm build
 ```
 
-Start the Keycloak server in development mode using port 8180. See the instructions in the [Keycloak server app](../../apps/keycloak-server/README.md).
+Start the Identity server in development mode using port 8180. See the instructions in the [Identity server app](../../apps/keycloak-server/README.md).
 
 ```bash
 cd ../../apps/keycloak-server

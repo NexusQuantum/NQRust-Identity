@@ -1,6 +1,6 @@
-# Keycloak Account UI
+# Identity Account UI
 
-This project is the next generation of the Keycloak Account UI. It is written with React and [PatternFly](https://www.patternfly.org/) and uses [Vite](https://vitejs.dev/guide/).
+This project is the next generation of the Identity Account UI. It is written with React and [PatternFly](https://www.patternfly.org/) and uses [Vite](https://vitejs.dev/guide/).
 
 ## Features
 
