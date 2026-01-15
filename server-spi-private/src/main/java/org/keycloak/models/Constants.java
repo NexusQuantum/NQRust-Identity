@@ -67,7 +67,7 @@ public final class Constants {
     public static final int DEFAULT_SESSION_MAX_LIFESPAN = 36000; // 10 hours
 
     public static final String DEFAULT_WEBAUTHN_POLICY_SIGNATURE_ALGORITHMS = Algorithm.ES256+","+Algorithm.RS256;
-    public static final String DEFAULT_WEBAUTHN_POLICY_RP_ENTITY_NAME = "keycloak";
+    public static final String DEFAULT_WEBAUTHN_POLICY_RP_ENTITY_NAME = "Identity";
     // it stands for optional parameter not specified in WebAuthn
     public static final String DEFAULT_WEBAUTHN_POLICY_NOT_SPECIFIED = "not specified";
     public static final String WEBAUTHN_POLICY_OPTION_REQUIRED = "required";
