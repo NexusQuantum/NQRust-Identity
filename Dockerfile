@@ -30,7 +30,9 @@ COPY . .
 # Notes:
 # - Keep tests off for CI speed; run tests in a separate workflow if needed.
 # - Use Maven Wrapper to ensure correct Maven version.
-RUN ./mvnw -pl quarkus/deployment,quarkus/dist -am -DskipTests clean install
+# On Windows checkouts, mvnw can be CRLF which breaks execution in Linux containers (`./mvnw: not found`).
+# Normalize line endings and make it executable before running.
+RUN sed -i 's/\r$//' mvnw && chmod +x mvnw && ./mvnw -pl quarkus/deployment,quarkus/dist -am -DskipTests clean install
 
 ############################
 # 2) Assemble runtime fs + optimize build

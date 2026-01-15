@@ -49,7 +49,7 @@ public class Version {
         } catch (IOException e) {
             Version.VERSION = Version.UNKNOWN;
             Version.BUILD_TIME = Version.UNKNOWN;
-            name = "Keycloak";
+            name = "Identity";
         }
     }
 

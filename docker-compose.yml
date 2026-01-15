@@ -2,6 +2,8 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: keycloak-db
+    ports:
+      - "${PG_PORT:-5432}:5432"
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
@@ -17,7 +19,13 @@ services:
   keycloak:
     # Override at runtime:
     #   KEYCLOAK_IMAGE=ghcr.io/idhamtrycode/keycloak:latest docker compose up -d
-    image: ${KEYCLOAK_IMAGE:-ghcr.io/idhamtrycode/keycloak:latest}
+    # Default to local image for development.
+    # With `build:` present, `docker compose up -d --build` will build from this repo.
+    image: ${KEYCLOAK_IMAGE:-keycloak-custom:local}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    pull_policy: never
     container_name: keycloak
     depends_on:
       postgres:
