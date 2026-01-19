@@ -20,11 +20,11 @@ services:
 
   identity:
     # Default to GHCR image (recommended):
-    #   docker pull ghcr.io/idhamtrycode/nqrust-identity:latest
+    #   docker pull ghcr.io/nexusquantum/nqrust-identity:latest
     #   docker compose up -d
     # Override at runtime if needed:
-    #   KEYCLOAK_IMAGE=ghcr.io/idhamtrycode/nqrust-identity:latest docker compose up -d
-    image: ${KEYCLOAK_IMAGE:-ghcr.io/idhamtrycode/nqrust-identity:latest}
+    #   KEYCLOAK_IMAGE=ghcr.io/nexusquantum/nqrust-identity:latest docker compose up -d
+    image: ${KEYCLOAK_IMAGE:-ghcr.io/nexusquantum/nqrust-identity:latest}
     pull_policy: always
     container_name: identity
     # depends_on:
