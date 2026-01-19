@@ -4,7 +4,7 @@ Repo ini dibuat untuk **custom build Keycloak** lalu **publish image Docker ke G
 
 ### Image
 - **Registry**: `ghcr.io`
-- **Image name**: `ghcr.io/<your-username>/keycloak` (contoh: `ghcr.io/idhamtrycode/keycloak`)
+- **Image name**: `ghcr.io/<your-username>/<repo>` (contoh: `ghcr.io/idhamtrycode/nqrust-identity`)
 - **Tags**:
   - `latest`
 
@@ -13,7 +13,7 @@ Repo ini dibuat untuk **custom build Keycloak** lalu **publish image Docker ke G
 ## 1) Cara Pull Image
 
 ```bash
-docker pull ghcr.io/<your-username>/keycloak:latest
+docker pull ghcr.io/<your-username>/<repo>:latest
 ```
 
 ## 2) Cara Run (minimal / dev)
@@ -22,7 +22,7 @@ docker pull ghcr.io/<your-username>/keycloak:latest
 docker run --rm -p 8080:8080 \
   -e KEYCLOAK_ADMIN=admin \
   -e KEYCLOAK_ADMIN_PASSWORD=admin \
-  ghcr.io/<your-username>/keycloak:latest start-dev \
+  ghcr.io/<your-username>/<repo>:latest start-dev \
   --spi-theme--default=keycloakify-starter \
   --spi-theme--welcome-theme=keycloak
 ```
