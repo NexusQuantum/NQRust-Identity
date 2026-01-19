@@ -1,11 +1,8 @@
-name: Keycloak Guides
+name: Identity Guides
 
 on:
   push:
-    branches-ignore:
-      - main
-      - dependabot/**
-      - quarkus-next
+    branches: [ "main" ]
   pull_request:
   workflow_dispatch:
 
@@ -52,11 +49,11 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Build Keycloak
+      - name: Build Identity
         uses: ./.github/actions/build-keycloak
 
   check:
-    name: Status Check - Keycloak Guides
+    name: Status Check - Identity Guides
     if: always()
     needs:
       - conditional

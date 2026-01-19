@@ -1,11 +1,8 @@
-name: Keycloak Documentation
+name: Identity Documentation
 
 on:
   push:
-    branches-ignore:
-      - main
-      - dependabot/**
-      - quarkus-next
+    branches: [ "main" ]
   pull_request:
   workflow_dispatch:
 
@@ -59,16 +56,16 @@ jobs:
         uses: ./.github/actions/maven-cache
 
       - id: build-test-documentation
-        name: Build and verify Keycloak documentation
+        name: Build and verify Identity documentation
         shell: bash
         run: |
           ./mvnw install -Dtest=!ExternalLinksTest -am -pl docs/documentation/tests,docs/documentation/dist -e -Pdocumentation
 
       - id: upload-keycloak-documentation
-        name: Upload Keycloak documentation
+        name: Upload Identity documentation
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          name: keycloak-documentation
+          name: identity-documentation
           path: docs/documentation/dist/target/*.zip
           retention-days: 1
 
@@ -89,13 +86,13 @@ jobs:
         uses: ./.github/actions/maven-cache
 
       - id: build-test-documentation
-        name: Build and verify Keycloak documentation
+        name: Build and verify Identity documentation
         shell: bash
         run: |
           ./mvnw install -Dtest=ExternalLinksTest -am -pl docs/documentation/tests -e -Pdocumentation 
 
   check:
-    name: Status Check - Keycloak Documentation
+    name: Status Check - Identity Documentation
     if: always()
     needs:
       - conditional

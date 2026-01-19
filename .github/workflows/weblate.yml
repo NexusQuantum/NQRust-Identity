@@ -2,7 +2,7 @@ name: Weblate Sync
 
 on:
   # Update Weblate once a day, and if a translation file (source or target) changes.
-  # Using this workflow prevents Weblate to rebase its PRs on every commit in Keycloak's main branch.
+  # Using this workflow prevents Weblate to rebase its PRs on every commit in Identity's main branch.
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch: {}

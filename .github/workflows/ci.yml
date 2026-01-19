@@ -1,10 +1,8 @@
-name: Keycloak CI
+name: Identity CI
 
 on:
   push:
-    branches-ignore:
-      - main
-      - dependabot/**
+    branches: [ "main" ]
   pull_request:
   workflow_dispatch:
 
@@ -101,7 +99,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Build Keycloak
+      - name: Build Identity
         uses: ./.github/actions/build-keycloak
 
       - name: Spotless
@@ -231,7 +229,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      # We want to download Keycloak artifacts
+      # We want to download Identity artifacts
       - id: integration-test-setup
         name: Integration test setup
         uses: ./.github/actions/integration-test-setup
@@ -1059,7 +1057,7 @@ jobs:
         name: Integration test setup
         uses: ./.github/actions/integration-test-setup
 
-        # This step is necessary because test/clustering requires building a new Keycloak image built from tar.gz
+        # This step is necessary because test/clustering requires building a new Identity image built from tar.gz
         # file that is not part of m2-keycloak.tzts archive
       - name: Build tar keycloak-quarkus-dist
         run: ./mvnw package -pl quarkus/server/,quarkus/dist/
@@ -1105,7 +1103,7 @@ jobs:
         name: Integration test setup
         uses: ./.github/actions/integration-test-setup
 
-        # This step is necessary because test/clustering requires building a new Keycloak image built from tar.gz
+        # This step is necessary because test/clustering requires building a new Identity image built from tar.gz
         # file that is not part of m2-keycloak.tzts archive
       - name: Build tar keycloak-quarkus-dist
         run: ./mvnw package -pl quarkus/server/,quarkus/dist/
@@ -1116,7 +1114,7 @@ jobs:
           KC_TEST_SERVER_IMAGES: "quay.io/keycloak/keycloak:${{ matrix.version }},-"
 
   check:
-    name: Status Check - Keycloak CI
+    name: Status Check - Identity CI
     if: always()
     needs:
       - conditional

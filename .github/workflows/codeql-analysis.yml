@@ -2,10 +2,7 @@ name: CodeQL
 
 on:
   push:
-    branches-ignore:
-      - main
-      - dependabot/**
-      - quarkus-next
+    branches: [ "main" ]
   pull_request:
      branches: [main]
   workflow_dispatch:
@@ -63,7 +60,7 @@ jobs:
         with:
           languages: java
 
-      - name: Build Keycloak
+      - name: Build Identity
         uses: ./.github/actions/build-keycloak
 
       - name: Perform CodeQL Analysis

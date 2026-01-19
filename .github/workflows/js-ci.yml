@@ -1,11 +1,8 @@
-name: Keycloak JavaScript CI
+name: Identity JavaScript CI
 
 on:
   push:
-    branches-ignore:
-      - main
-      - dependabot/**
-      - quarkus-next
+    branches: [ "main" ]
   pull_request:
   workflow_dispatch:
 
@@ -42,21 +39,21 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   build-keycloak:
-    name: Build Keycloak
+    name: Build Identity
     needs: conditional
     if: needs.conditional.outputs.js-ci == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Build Keycloak
+      - name: Build Identity
         uses: ./.github/actions/build-keycloak
 
       - name: Prepare archive for upload
         run: |
           mv ./quarkus/dist/target/keycloak-999.0.0-SNAPSHOT.tar.gz ./keycloak-999.0.0-SNAPSHOT.tar.gz
 
-      - name: Upload Keycloak dist
+      - name: Upload Identity dist
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: keycloak
@@ -158,7 +155,7 @@ jobs:
 
       - uses: ./.github/actions/pnpm-setup
 
-      - name: Download Keycloak server
+      - name: Download Identity server
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: keycloak
@@ -166,7 +163,7 @@ jobs:
       - name: Setup Java
         uses: ./.github/actions/java-setup
 
-      - name: Start Keycloak server
+      - name: Start Identity server
         run: |
           tar xfvz keycloak-999.0.0-SNAPSHOT.tar.gz
           keycloak-999.0.0-SNAPSHOT/bin/kc.sh start-dev --features=transient-users,oid4vc-vci &> ~/server.log &
@@ -219,7 +216,7 @@ jobs:
 
       - uses: ./.github/actions/pnpm-setup
 
-      - name: Download Keycloak server
+      - name: Download Identity server
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: keycloak
@@ -227,7 +224,7 @@ jobs:
       - name: Setup Java
         uses: ./.github/actions/java-setup
 
-      - name: Start Keycloak server
+      - name: Start Identity server
         run: |
           tar xfvz keycloak-999.0.0-SNAPSHOT.tar.gz
           keycloak-999.0.0-SNAPSHOT/bin/kc.sh start-dev --features=admin-fine-grained-authz:v2,transient-users,spiffe,oid4vc-vci,kubernetes-service-accounts,jwt-authorization-grant,workflows &> ~/server.log &
@@ -261,7 +258,7 @@ jobs:
           path: ~/server.log
 
   keycloak-admin-client:
-    name: Keycloak Admin Client
+    name: Identity Admin Client
     needs:
       - conditional
       - build-keycloak
@@ -273,7 +270,7 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Download Keycloak server
+      - name: Download Identity server
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: keycloak
@@ -281,7 +278,7 @@ jobs:
       - name: Setup Java
         uses: ./.github/actions/java-setup
 
-      - name: Start Keycloak server
+      - name: Start Identity server
         run: |
           tar xfvz keycloak-999.0.0-SNAPSHOT.tar.gz
           keycloak-999.0.0-SNAPSHOT/bin/kc.sh start-dev --http-port 8180 --features transient-users,oid4vc-vci,declarative-ui,quick-theme,spiffe,kubernetes-service-accounts,workflows,client-auth-federated,jwt-authorization-grant &> ~/server.log &
@@ -297,7 +294,7 @@ jobs:
         working-directory: js
 
   check:
-    name: Status Check - Keycloak JavaScript CI
+    name: Status Check - Identity JavaScript CI
     if: always()
     needs:
       - conditional
