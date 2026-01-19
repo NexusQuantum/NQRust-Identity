@@ -2,7 +2,9 @@ name: Identity CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches-ignore:
+      - main
+      - dependabot/**
   pull_request:
   workflow_dispatch:
 
