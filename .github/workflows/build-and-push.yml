@@ -1,8 +1,9 @@
 name: Build and push Identity image (GHCR)
 
+# Build and push image only when a new release is published (not on every push).
 on:
-  push:
-    branches: [ "main" ]
+  release:
+    types: [ published ]
   workflow_dispatch: {}
 
 env:
@@ -38,13 +39,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # On release: tag with release version (e.g. v1.0.0) and latest. On manual run: tag as latest.
       - name: Docker meta (tags, labels)
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest
+            type=raw,value=${{ github.event_name == 'release' && github.event.release.tag_name || 'latest' }},enable=${{ github.event_name == 'release' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -55,7 +58,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            KEYCLOAK_VERSION=${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '999.0.0-SNAPSHOT' }}
+            KEYCLOAK_VERSION=${{ github.event_name == 'release' && github.event.release.tag_name || '999.0.0-SNAPSHOT' }}
             VCS_REF=${{ github.sha }}
             BUILD_DATE=${{ steps.buildmeta.outputs.build_date }}
           cache-from: type=gha
