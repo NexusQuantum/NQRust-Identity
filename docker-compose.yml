@@ -13,19 +13,20 @@ services:
     volumes:
       - identity_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U identity -d identity"]
+      test: [ "CMD-SHELL", "pg_isready -U identity -d identity" ]
       interval: 5s
       timeout: 3s
       retries: 20
 
   identity:
-    # Default to GHCR image (recommended):
-    #   docker pull ghcr.io/nexusquantum/nqrust-identity:latest
-    #   docker compose up -d
-    # Override at runtime if needed:
+    # Build from local source (default).
+    # To use GHCR image instead, comment out `build` and set:
     #   KEYCLOAK_IMAGE=ghcr.io/nexusquantum/nqrust-identity:latest docker compose up -d
-    image: ${KEYCLOAK_IMAGE:-ghcr.io/nexusquantum/nqrust-identity:latest}
-    pull_policy: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${KEYCLOAK_IMAGE:-nqrust-identity:local}
+    pull_policy: never
     container_name: identity
     # depends_on:
     #   postgres:
@@ -52,6 +53,11 @@ services:
       KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_STRICT: "false"
 
+      # License Configuration
+      LICENSE_SERVER_URL: ${LICENSE_SERVER_URL:-https://billing.nexusquantum.id}
+      LICENSE_API_KEY: ${LICENSE_API_KEY}
+      LICENSE_PUBLIC_KEY: ${LICENSE_PUBLIC_KEY}
+
       # Behind reverse proxy? (uncomment + tune)
       # KC_PROXY: edge
       # KC_HOSTNAME: auth.example.com
@@ -62,17 +68,12 @@ services:
 
     # Use string form so we can use env-substitution in args
     command: >
-      start --optimized
-      --http-enabled=true
-      --hostname-strict=false
-      --spi-theme--default=${KC_THEME_DEFAULT:-keycloakify-starter}
-      --spi-theme--welcome-theme=${KC_THEME_WELCOME:-keycloak}
+      start --optimized --http-enabled=true --hostname-strict=false --spi-theme--default=${KC_THEME_DEFAULT:-keycloakify-starter} --spi-theme--welcome-theme=${KC_THEME_WELCOME:-keycloak}
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health/ready > /dev/null"]
+      test: [ "CMD-SHELL", "curl -fsS http://localhost:8080/health/ready > /dev/null" ]
       interval: 10s
       timeout: 5s
       retries: 30
 
 volumes:
   identity_pgdata: {}
-

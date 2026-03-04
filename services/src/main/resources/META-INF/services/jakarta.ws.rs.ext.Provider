@@ -1,0 +1,2 @@
+org.keycloak.services.resources.nqrust.LicenseRequestFilter
+org.keycloak.services.resources.nqrust.LicenseResponseFilter
